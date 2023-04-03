@@ -1,0 +1,9 @@
+- name: create user
+  become: true
+  when: user is defined
+  user: name={{ user }} comment="user who manage servers"
+- name: adding ssh key to remote host
+  authorized_key: user={{ user }} key={{ lookup('file', '~/.ssh/id_rsa.pub') }}
+- name: "{{ user }} becoming sudoers"
+  when: user is defined
+  template: src=templates/sudoers.j2 dest=/etc/sudoers.d/{{ user }}-sudoer validate='visudo -cf %s'

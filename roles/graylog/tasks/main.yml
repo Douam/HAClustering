@@ -1,0 +1,16 @@
+---
+- name: Install Graylog
+  become: true
+  apt:
+    name: graylog-server
+    state: present
+- name: Configure Graylog
+  become: true
+  copy:
+    src: server.conf
+    dest: /etc/graylog/server/server.conf
+    owner: root
+    group: root
+    mode: "0644"
+    notify:
+      - restart graylog-server

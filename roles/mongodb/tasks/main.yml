@@ -1,0 +1,29 @@
+---
+# tasks file for mongodb
+
+- name: Install MongoDB
+  become: true
+  apt:
+    name: mongodb-server
+    state: present
+
+- name: Configure MongoDB for Graylog
+  become: true
+  copy:
+    src: mongodb.conf
+    dest: /etc/mongodb.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart mongodb
+
+- name: Initialize MongoDB Replica Set
+  become: true
+  shell: >
+    mongo --eval "rs.initiate({_id: "rs0", members: [{_id: 0, host: "172.20.3.40:27017", priority: 2}, {_id: 1, host: "172.20.3.50:27017"}, {_id: 2, host: "172.20.3.60:27017"}]})"
+
+- name: Wait for MongoDB Replica Set to become ready
+  wait_for:
+    port: 27017
+    timeout: 300
