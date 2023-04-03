@@ -3,3 +3,7 @@
 graylog_server_defaults_file_path: "/etc/default/graylog-server"
 graylog_mongodb_data_path: "/var/lib/mongodb"
 graylog_java: "openjdk-17-jdk-headless"
+graylog_version: 5.0
+graylog_apt_deb_url: "https://packages.graylog2.org/repo/packages/graylog-5.0-repository_latest.deb"
+graylog_is_master: true
+graylog_is_leader: "{{ graylog_is_master }}"
