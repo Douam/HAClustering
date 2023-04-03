@@ -1,0 +1,6 @@
+---
+- name: install iperf servers
+  hosts: IperfServer
+  remote_user: root
+  roles:
+    - tools

@@ -4,10 +4,42 @@
   apt:
     name: graylog-server
     state: present
+
+- name: "Graylog repository package should be downloaded"
+  get_url:
+    url: "{{ graylog_apt_deb_url }}"
+    dest: "/tmp/graylog_{{ graylog_version }}_repository.deb"
+  when: graylog_manage_apt_repo
+
+- name: "Graylog repository package should be installed"
+  apt:
+    deb: "/tmp/graylog_{{ graylog_version }}_repository.deb"
+    state: present
+    dpkg_options: "force-all"
+  when: graylog_manage_apt_repo
+  register: "install_repo"
+
+- name: "Package 'apt-transport-https' should be installed"
+  apt:
+    name: "apt-transport-https"
+    state: present
+
+- name: "APT cache should be updated"
+  apt:
+    update_cache: True
+  when: install_repo.changed
+
+- name: "Graylog server package should be installed"
+  apt:
+    name: "graylog-server{% if graylog_full_version is defined %}={{ graylog_full_version }}{% endif %}"
+    state: "{{ graylog_package_state }}"
+  notify: "restart graylog-server"
+
 - name: Configure Graylog
   become: true
   copy:
-    src: server.conf
+    template:
+    src: server.conf.j2
     dest: /etc/graylog/server/server.conf
     owner: root
     group: root

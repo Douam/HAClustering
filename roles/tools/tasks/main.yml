@@ -1,2 +1,11 @@
----
-# tasks file for tools
+- name: Install Java Vim
+  become: true
+  apt:
+    name:
+      - openjdk-17-jdk-headless
+      - vim
+      - htop
+    update_cache: yes
+    force: yes
+    state: latest
+    cache_valid_time: 86400
