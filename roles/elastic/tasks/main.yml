@@ -29,7 +29,7 @@
 
 - name: Configure Elasticsearch
   copy:
-    src: elasticsearch.j2
+    src: "template/elasticsearch.j2"
     dest: /etc/elasticsearch/elasticsearch.yml
     owner: root
     group: root
