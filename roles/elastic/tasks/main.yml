@@ -1,8 +1,30 @@
 ---
+- name: Run apt upgrade
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+    cache_valid_time: 432000
+
+- name: Add Elasticsearch GPG Key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+- name: "Package 'apt-transport-https' should be installed"
+  apt:
+    name: "apt-transport-https"
+    state: present
+
+- name: Add Elasticsearch Repository
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+    filename: elastic-7.x
+    update_cache: yes
+
 - name: Install Elasticsearch
   become: true
   apt:
-    name: elasticsearch
+    name: elasticsearch=7.10.2
     state: present
 
 - name: Configure Elasticsearch

@@ -1,2 +1,10 @@
 ---
 # vars file for elastic
+es_version: "7.10.2"
+es_security_enabled: true
+es_security_roles:
+  - name: "role1"
+    indices:
+  - index: "my_index"
+    privileges:
+      - "read"
