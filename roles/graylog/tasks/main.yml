@@ -1,4 +1,10 @@
 ---
+- name: Run apt upgrade
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+    cache_valid_time: 432000
+
 - name: Add Graylog repository
   apt_key:
     url: https://packages.graylog2.org/repo/packages/graylog-5.0-repository_latest.deb.asc

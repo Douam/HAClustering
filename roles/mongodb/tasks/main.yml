@@ -1,5 +1,11 @@
 ---
 # tasks file for mongodb
+- name: Run apt upgrade
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+    cache_valid_time: 432000
+
 - name: Add MongoDB repository
   apt_key:
     url: https://www.mongodb.org/static/pgp/server-4.4.asc
@@ -31,16 +37,10 @@
   notify:
     - restart mongodb
 
-- name: Create Graylog MongoDB database
-  mongodb_database:
-    name: graylog
-    state: present
-  become: true
-
 - name: Create Graylog MongoDB admin user
   mongodb_user:
-    database: admin
-    name: graylog
+    database: graylog
+    name: douamgray
     password: "{{password}}"
 
     roles:

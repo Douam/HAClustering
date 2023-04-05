@@ -1,9 +1,13 @@
 ---
 - name: "Mongodb main playbook"
-- hosts: "graylog"
+
+- hosts: graylog
+
   remote_user: root
+
   roles:
     - mongodb
+#
 #- hosts: "graylog01"
 #  tasks:
 #    - name: "Install PyMongo"
