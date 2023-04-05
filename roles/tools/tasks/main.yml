@@ -5,6 +5,7 @@
       - openjdk-17-jdk-headless
       - vim
       - htop
+      - apt-transport-https
       - python3
       - uuid-runtime
       - pwgen
