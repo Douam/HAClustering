@@ -7,16 +7,16 @@
 
 - name: Download Graylog server package
   get_url:
-    url: https://packages.graylog2.org/repo/packages/graylog-5.0.x/4.0/debian/pool/stable/g/graylog-server/graylog-server_5.0.1-1_all.deb
-    dest: /tmp/graylog-server_5.0.1-1_all.deb
+    url: https://packages.graylog2.org/repo/packages/graylog-5.0-repository_latest.deb
+    dest: /tmp/graylog-5.0-repository_latest.deb
 
 - name: Install Graylog server package
-  command: dpkg -i graylog-5.0-repository_latest.deb
+  command: dpkg -i  /tmp/graylog-5.0-repository_latest.deb
 
 - name: Install Graylog
   become: true
   apt:
-    name: graylog-server=5.0.1-1
+    name: graylog-server
     state: present
     update_cache: yes
 
@@ -27,6 +27,7 @@
     state: started
 
 - name: Configure Graylog
+  become: true
   copy:
     src: "templates/server.conf.j2"
     dest: /etc/graylog/server/server.conf
