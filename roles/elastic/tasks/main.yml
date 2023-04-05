@@ -9,6 +9,7 @@
   apt_key:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     state: present
+
 - name: "Package 'apt-transport-https' should be installed"
   apt:
     name: "apt-transport-https"
