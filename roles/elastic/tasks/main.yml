@@ -26,6 +26,7 @@
   apt:
     name: elasticsearch=7.10.2
     state: present
+    run_once: true
 
 - name: Configure Elasticsearch
   copy:

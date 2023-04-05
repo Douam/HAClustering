@@ -1,16 +1,29 @@
 ---
 # tasks file for mongodb
+- name: Add MongoDB repository
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-4.4.asc
+    state: present
+  become: true
+
+- name: Add MongoDB repository
+  apt_repository:
+    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse"
+    state: present
+    filename: mongodb-org-6.0
+  become: true
 
 - name: Install MongoDB
   become: true
   apt:
     name: mongodb-server
     state: present
+    become: true
 
 - name: Configure MongoDB for Graylog
   become: true
   copy:
-    src: mongodb.conf
+    src: "templates/mongodb.conf.j2"
     dest: /etc/mongodb.conf
     owner: root
     group: root
@@ -18,10 +31,31 @@
   notify:
     - restart mongodb
 
+- name: Create Graylog MongoDB database
+  mongodb_database:
+    name: graylog
+    state: present
+  become: true
+
+- name: Create Graylog MongoDB admin user
+  mongodb_user:
+    database: admin
+    name: graylog
+    password: "{{password}}"
+
+    roles:
+      [
+        "readWriteAnyDatabase",
+        "dbAdminAnyDatabase",
+        "userAdminAnyDatabase",
+        "clusterAdmin",
+      ]
+  become: true
+
 - name: Initialize MongoDB Replica Set
   become: true
   shell: >
-    mongo --eval "rs.initiate({_id: "rs0", members: [{_id: 0, host: "172.20.3.40:27017", priority: 2}, {_id: 1, host: "172.20.3.50:27017"}, {_id: 2, host: "172.20.3.60:27017"}]})"
+    mongo --eval "rs.initiate({_id: "graylog", members: [{_id: 0, host: "172.20.3.126:27017", priority: 2}, {_id: 1, host: "172.20.3.109:27017"}, {_id: 2, host: "172.20.3.55:27017"}]})"
 
 - name: Wait for MongoDB Replica Set to become ready
   wait_for:
