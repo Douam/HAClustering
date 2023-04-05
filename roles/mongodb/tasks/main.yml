@@ -19,8 +19,8 @@
 
 - name: Add repository
   apt_repository:
-    filename: "/etc/apt/sources.list.d/mongodb-org-4.4.list"
-    repo: "deb https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.4 multiverse"
+    filename: "/etc/apt/sources.list.d/mongodb-org-5.0.list"
+    repo: "deb https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/5.0 multiverse"
     state: present
     update_cache: yes
 
@@ -48,6 +48,16 @@
   notify:
     - restart mongodb
 
+- name: Initialize MongoDB Replica Set
+  become: true
+  shell: >
+    mongo --eval "rs.initiate({_id: "graylog", members: [{_id: 0, host: "172.20.3.126:27017", priority: 2}, {_id: 1, host: "172.20.3.109:27017"}, {_id: 2, host: "172.20.3.55:27017"}]})"
+
+- name: Wait for MongoDB Replica Set to become ready
+  wait_for:
+    port: 27017
+    timeout: 300
+
 - name: Create Graylog MongoDB admin user
   mongodb_user:
     database: graylog
@@ -62,13 +72,3 @@
         "clusterAdmin",
       ]
   become: true
-
-- name: Initialize MongoDB Replica Set
-  become: true
-  shell: >
-    mongo --eval "rs.initiate({_id: "graylog", members: [{_id: 0, host: "172.20.3.126:27017", priority: 2}, {_id: 1, host: "172.20.3.109:27017"}, {_id: 2, host: "172.20.3.55:27017"}]})"
-
-- name: Wait for MongoDB Replica Set to become ready
-  wait_for:
-    port: 27017
-    timeout: 300

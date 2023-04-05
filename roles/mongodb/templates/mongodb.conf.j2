@@ -5,7 +5,7 @@
 
 # Where and how to store data.
 storage:
-  dbPath: {{ graylog_mongodb_data_path }}
+  dbPath: /var/lib/mongodb
   journal:
     enabled: true
 #  engine:
@@ -19,20 +19,20 @@ systemLog:
 
 # network interfaces
 net:
-  port: {{ graylog_mongodb_bind_port }}
-  bindIp: {{ graylog_mongodb_bind_ip }}
+  port: 27017
+  bindIp: 0.0.0.0
 
 
+# how the process runs
 processManagement:
-  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
   timeZoneInfo: /usr/share/zoneinfo
 
 #security:
 
 #operationProfiling:
 
-#replication:
-
+replication:
+  replSetName: "graylog"
 #sharding:
 
 ## Enterprise-Only Options:
