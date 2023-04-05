@@ -11,18 +11,18 @@
     url: "https://www.mongodb.org/static/pgp/server-5.0.asc"
     state: present
 
-- name: Add MongoDB repository
-  apt_key:
-    url: https://www.mongodb.org/static/pgp/server-5.0.asc
-    state: present
-  become: true
+#- name: Add MongoDB repository
+#  apt_key:
+#   url: https://www.mongodb.org/static/pgp/server-5.0.asc
+#    state: present
+#  become: true
 
-- name: Add MongoDB repository
+- name: Add repository
   apt_repository:
-    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse"
+    filename: "/etc/apt/sources.list.d/mongodb-org-4.4.list"
+    repo: "deb https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.4 multiverse"
     state: present
-    filename: mongodb-org-5.0.14
-  become: true
+    update_cache: yes
 
 - name: Install mongoDB
   apt:

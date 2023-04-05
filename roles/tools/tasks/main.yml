@@ -5,6 +5,7 @@
       - openjdk-17-jdk-headless
       - vim
       - htop
+      - python3
     update_cache: yes
     force: yes
     state: latest
