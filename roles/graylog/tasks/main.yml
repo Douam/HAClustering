@@ -5,42 +5,34 @@
     update_cache: yes
     cache_valid_time: 432000
 
-- name: Add Graylog repository
-  apt_key:
-    url: https://packages.graylog2.org/repo/packages/graylog-5.0-repository_latest.deb.asc
-    state: present
-  become: true
+- name: Download Graylog server package
+  get_url:
+    url: https://packages.graylog2.org/repo/packages/graylog-5.0.x/4.0/debian/pool/stable/g/graylog-server/graylog-server_5.0.1-1_all.deb
+    dest: /tmp/graylog-server_5.0.1-1_all.deb
 
-- name: Add Graylog repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://packages.graylog2.org/repo/packages graylog-5.0 main"
-    state: present
-    filename: graylog-5.0
-  become: true
+- name: Install Graylog server package
+  command: dpkg -i graylog-5.0-repository_latest.deb
 
 - name: Install Graylog
   become: true
   apt:
-    name: graylog-server
+    name: graylog-server=5.0.1-1
     state: present
     update_cache: yes
 
-- name: "Package 'apt-transport-https' should be installed"
-  apt:
-    name: "apt-transport-https"
-    state: present
+- name: Enable Graylog server service
+  systemd:
+    name: graylog-server
+    enabled: yes
+    state: started
 
 - name: Configure Graylog
-  become: true
   copy:
-    template:
     src: "templates/server.conf.j2"
     dest: /etc/graylog/server/server.conf
     owner: root
     group: root
     mode: "0644"
-    notify:
-      - restart graylog-server
 
 - name: restart graylog
   service:

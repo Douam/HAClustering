@@ -4,6 +4,7 @@
   remote_user: root
 
   roles:
+    - tools
     - mongodb
 #
 #- hosts: "graylog01"

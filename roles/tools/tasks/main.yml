@@ -6,6 +6,9 @@
       - vim
       - htop
       - python3
+      - uuid-runtime
+      - pwgen
+      - curl
     update_cache: yes
     force: yes
     state: latest
