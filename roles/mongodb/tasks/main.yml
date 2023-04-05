@@ -24,12 +24,12 @@
     filename: mongodb-org-6.0
   become: true
 
-- name: Install MongoDB
-  become: true
+- name: Install mongoDB
   apt:
-    name: mongodb-server
+    name: mongodb-org
     state: present
-    become: true
+    update_cache: yes
+  become: true
 
 - name: Ensure mongodb is running and and enabled to start automatically on reboots
   service:
