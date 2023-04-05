@@ -8,20 +8,20 @@
 
 - name: Import public key
   apt_key:
-    url: "https://www.mongodb.org/static/pgp/server-6.0.asc"
+    url: "https://www.mongodb.org/static/pgp/server-5.0.asc"
     state: present
 
 - name: Add MongoDB repository
   apt_key:
-    url: https://www.mongodb.org/static/pgp/server-4.4.asc
+    url: https://www.mongodb.org/static/pgp/server-5.0.asc
     state: present
   become: true
 
 - name: Add MongoDB repository
   apt_repository:
-    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse"
+    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse"
     state: present
-    filename: mongodb-org-6.0
+    filename: mongodb-org-5.0.14
   become: true
 
 - name: Install mongoDB
