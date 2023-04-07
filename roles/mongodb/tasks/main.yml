@@ -48,30 +48,20 @@
   notify:
     - restart mongodb
 
-#- name: Initialize MongoDB Replica Set
-#  become: true
-#  shell: >
-#    mongo --eval "rs.initiate({_id: "graylog", members: [{_id: 0, host: "172.20.3.126:27017", priority: 2}, {_id: 1, host: "172.20.3.109:27017"}, {_id: 2, host: "172.20.3.55:27017"}]})"
+- name: Install pymongo Python library
+  become: true
+  pip:
+    name: pymongo
+
+- name: Initialize MongoDB Replica Set
+  become: true
+  shell: >
+    mongo --eval 'rs.initiate({_id: "graylog", members: [{_id: 0, host: "172.20.3.126:27017", priority: 2}, {_id: 1, host: "172.20.3.109:27017"}, {_id: 2, host: "172.20.3.55:27017"}]})'
 
 - name: Wait for MongoDB Replica Set to become ready
   wait_for:
     port: 27017
     timeout: 300
-
-- name: Initialize MongoDB Replica Set
-  mongodb_replica_set:
-    replica_set_name: "{{ mongodb_replica_set_name }}"
-    members:
-      - host: 172.20.3.75:27017
-        priority: 2
-        votes: 1
-      - host: 172.20.3.86:27017
-        priority: 1
-        votes: 1
-      - host: 172.20.3.192:27017
-        priority: 1
-        votes: 1
-    state: present
 
 - name: Create Graylog MongoDB admin user
   mongodb_user:
