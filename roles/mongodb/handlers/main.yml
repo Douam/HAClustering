@@ -1,11 +1,12 @@
 ---
-# handlers file for mongodb
-- name: restart mongodb
-  service:
-    name: mongodb
-    state: restarted
+# handlers file for graylog
 
 - name: restart graylog-server
   service:
     name: graylog-server
+    state: restarted
+
+- name: restart mongodb
+  service:
+    name: mongodb
     state: restarted
