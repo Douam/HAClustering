@@ -178,7 +178,7 @@ http_bind_address = 0.0.0.0:9000
 
 # If set to "true", Graylog will periodically investigate indices to figure out which fields are used in which streams.
 # It will make field list in Graylog interface show only fields used in selected streams, but can decrease system performance,
-# especially on systems with great number of streams and fields.
+# especially on systems with great number of streams and fields.elastic
 stream_aware_field_types=false
 
 # Comma separated list of trusted proxies that are allowed to set the client address with X-Forwarded-For
@@ -191,7 +191,7 @@ stream_aware_field_types=false
 # requires authentication.
 #
 # Default: http://127.0.0.1:9200
-elasticsearch_hosts = http://172.20.3.98:9200,http://172.20.3.139:9200,http://172.20.3.51:9200
+elasticsearch_hosts = http://172.20.3.126:9200,http://172.20.3.55:9200,http://172.20.3.109:9200
 
 # Maximum number of attempts to connect to elasticsearch on boot for the version probe.
 #

@@ -27,11 +27,11 @@
   apt:
     name: elasticsearch=7.10.2
     state: present
-    run_once: true
+    #run_once: true
 
 - name: Configure Elasticsearch
   copy:
-    src: "template/elasticsearch.j2"
+    src: "templates/elasticsearch.j2"
     dest: /etc/elasticsearch/elasticsearch.yml
     owner: root
     group: root
