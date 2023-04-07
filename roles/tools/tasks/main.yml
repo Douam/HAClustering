@@ -10,6 +10,7 @@
       - uuid-runtime
       - pwgen
       - curl
+      - pip3
     update_cache: yes
     force: yes
     state: latest
