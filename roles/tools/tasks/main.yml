@@ -10,6 +10,7 @@
       - uuid-runtime
       - pwgen
       - curl
+      - gnupg
       - python3-pip
     update_cache: yes
     force: yes
